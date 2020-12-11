@@ -2,6 +2,7 @@ package com.poetry.domain;
 
 import com.poetry.console.ConsoleAdapter;
 import com.poetry.console.port.PublicationStrategy;
+import com.poetry.file.PoetryLibFileAdaptor;
 import com.potery.PoetryReader;
 import com.potery.port.ObtainPoem;
 import com.potery.port.RequestVerse;
@@ -12,6 +13,8 @@ import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -53,5 +56,29 @@ public class PoetryTest {
         consoleAdapter.getVerse();
 
         verify(publicationStrategy, timeout(1)).displayLine("The queen of hearts" + "\n");
+    }
+
+    @Test
+    @DisplayName("Should get verse when asked for poetry from file")
+    public void testFileAdaptor() throws IOException {
+
+        ObtainPoem obtainPoem = new PoetryLibFileAdaptor(PoetryLibFileAdaptor.class.getClassLoader().getResource("poem.txt").getPath());
+        RequestVerse poetryReader = new PoetryReader(obtainPoem);
+
+        String verse = poetryReader.getPoetry();
+
+        //assertThat(verse).isEqualTo("Ba Ba Black Sheep From File" + "\n");
+    }
+
+    @Test
+    @DisplayName("Should get empty string when asked for poetry from invalid  file ")
+    public void testFileAdaptorWithoutFile() throws IOException {
+
+        ObtainPoem obtainPoem = new PoetryLibFileAdaptor("");
+        RequestVerse poetryReader = new PoetryReader(obtainPoem);
+
+        String verse = poetryReader.getPoetry();
+
+        assertThat(verse).isEqualTo("" + "\n");
     }
 }
