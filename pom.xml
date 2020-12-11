@@ -13,6 +13,7 @@
         <module>domain</module>
         <module>console-adapter</module>
         <module>file-adapter</module>
+        <module>console</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>
