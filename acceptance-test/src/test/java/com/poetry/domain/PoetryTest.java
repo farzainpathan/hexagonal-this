@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.IOException;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
@@ -62,12 +63,12 @@ public class PoetryTest {
     @DisplayName("Should get verse when asked for poetry from file")
     public void testFileAdaptor() throws IOException {
 
-        ObtainPoem obtainPoem = new PoetryLibFileAdaptor(PoetryLibFileAdaptor.class.getClassLoader().getResource("poem.txt").getPath());
+        ObtainPoem obtainPoem = new PoetryLibFileAdaptor(Objects.requireNonNull(PoetryLibFileAdaptor.class.getClassLoader().getResource("poem.txt")).getPath());
         RequestVerse poetryReader = new PoetryReader(obtainPoem);
 
         String verse = poetryReader.getPoetry();
 
-        //assertThat(verse).isEqualTo("Ba Ba Black Sheep From File" + "\n");
+        assertThat(verse).isEqualTo("Ba Ba Black Sheep From File" + "\n");
     }
 
     @Test
